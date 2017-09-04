@@ -1,0 +1,6 @@
+framework module CoronaCards {
+  umbrella header "CoronaCards.h"
+
+  export *
+  module * { export * }
+}

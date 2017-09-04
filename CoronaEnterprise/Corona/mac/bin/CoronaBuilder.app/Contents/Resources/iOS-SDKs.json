@@ -1,0 +1,10 @@
+{
+	"ios": [
+		{
+			"label": "10.3",
+			"xcodeVersion": "10.3",
+			"failMessage": "install or xcode-select Xcode 8.3 to enable",
+			"coronaVersion": 103000
+		}
+	]
+}

@@ -1,0 +1,10 @@
+{
+	"tvos": [
+		{
+			"label": "10.2",
+			"xcodeVersion": "10.2",
+			"failMessage": "install or xcode-select Xcode 8.3 to enable",
+			"coronaVersion": 102000
+		}
+	]
+}
