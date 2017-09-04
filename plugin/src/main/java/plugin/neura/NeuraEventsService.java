@@ -65,35 +65,36 @@ public class NeuraEventsService extends FirebaseMessagingService {
 			@Override
 			public void neuraEventDetected(NeuraEvent event) {
 				String eventText;
-				if(event != null && event.toString() != "") {
+				if (event != null && !event.toString().isEmpty()) {
 					eventText = event.toString();
+
+					HashMap<String, Object> params = new HashMap<>();
+					params.put("type", "Success");
+					params.put("data", data.get("pushData"));
+					LuaLoader.dispatch(params, "onNeuraMessageReceived", -1);
+
+					Log.i(getClass().getSimpleName(), "received Neura event - " + eventText);
+
+					SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("neuraplugin", 0);
+					boolean usingCustomReminders = mPrefs.getBoolean("usingCustomReminders", false);
+
+					//Log.d("Corona", "usingCustomReminders retrieved as " + usingCustomReminders);
+					if (usingCustomReminders)
+					{
+						checkForNeuraAlarm(getApplicationContext(), event);
+					}
+					else
+					{
+						generateNotification(getApplicationContext(), event);
+					}
+
+					//Not mandatory, just gives Neura sdk feedback on the event
+					NeuraApiClient.sendFeedbackOnEvent(getApplicationContext(), event.getNeuraId());
 				}
 				else {
 					eventText = "couldn't parse data";
 				}
 
-				HashMap<String, Object> params = new HashMap<>();
-				params.put("type", "Success");
-				params.put("data", data.get("pushData"));
-				LuaLoader.dispatch(params, "onNeuraMessageReceived", -1);
-
-				Log.i(getClass().getSimpleName(), "received Neura event - " + eventText);
-
-				SharedPreferences mPrefs = getApplicationContext().getSharedPreferences("neuraplugin", 0);
-				boolean usingCustomReminders = mPrefs.getBoolean("usingCustomReminders", false);
-
-				//Log.d("Corona", "usingCustomReminders retrieved as " + usingCustomReminders);
-				if (usingCustomReminders)
-				{
-					checkForNeuraAlarm(getApplicationContext(), event);
-				}
-				else
-				{
-					generateNotification(getApplicationContext(), event);
-				}
-
-				//Not mandatory, just gives Neura sdk feedback on the event
-				NeuraApiClient.sendFeedbackOnEvent(getApplicationContext(), event.getNeuraId());
 			}
 		});
 
