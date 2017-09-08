@@ -1688,7 +1688,7 @@ public class LuaLoader implements JavaFunction, CoronaRuntimeListener {
 		if (L.isBoolean(1)){
 			enabled = L.toBoolean(1);
 		}
-		mNeuraApiClient.enableAutomaticallySyncLogs(enabled);
+		mNeuraApiClient.enableNeuraHandingStateAlertMessages(enabled);
 		return 0;
 	}
 
